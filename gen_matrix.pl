@@ -1,7 +1,11 @@
 use List::Util qw(sum);
 my $dir = $ARGV[0]; chomp $dir; ######################## Directory of Isoforms results files.\
 my $prefix = $ARGV[1]; chomp $prefix;
-print "Output directory $prefix\n";
+
+if ($prefix eq ".") {
+   $prefix = "./";
+}
+
 #########my $file = $ARGV[1]; chomp $file; ###################### Sample Order File
 my @samples;my %tpm_hash;my %counts_hash;my $header;my %res_tpm; my %res_counts;
 opendir(F,"$dir");
@@ -90,7 +94,7 @@ foreach my $m(keys %counts_hash)
  $res_counts{$m}{$finalval}=0;
 }
 print "\nProcessed TPM and Counts Matrix for Isoforms\n";
-open(OUT,">$prefix\_Isoforms_TPM_matrix.txt");
+open(OUT,">$prefix\Isoforms_TPM_matrix.txt");
 print OUT "$mainheader\n";
 foreach my $m(keys %res_tpm)
 {
@@ -101,7 +105,7 @@ foreach my $m(keys %res_tpm)
  }
 }
 close OUT;
-open(OUT,">$prefix\_Isoforms_Counts_matrix.txt");
+open(OUT,">$prefix\Isoforms_Counts_matrix.txt");
 print OUT "$mainheader\n";
 foreach my $m(keys %res_counts)
 {
@@ -113,7 +117,7 @@ foreach my $m(keys %res_counts)
 }
 close OUT;
 my $header_new;my %hash_new;my $length_new;
-open(F,"$prefix\_Isoforms_TPM_matrix.txt");
+open(F,"$prefix\Isoforms_TPM_matrix.txt");
 while(my $data =<F>)
 {
  $data =~ s/^\s+|\s+$//g;
@@ -135,7 +139,7 @@ while(my $data =<F>)
 }
 close F;
 print "\nProcessesing and Writing Expression and Counts for Genes\n";
-open(OUT,">$prefix\_Genes_TPM_Matrix.txt");
+open(OUT,">$prefix\Genes_TPM_Matrix.txt");
 print OUT "Gene\t$header_new\n";
 foreach my $m(keys %hash_new)
 {
@@ -169,7 +173,7 @@ foreach my $m(keys %hash_new)
 }
 close OUT;
 my $header_new1;my %hash_new1;my $length_new1;
-open(F,"$prefix\_Isoforms_Counts_matrix.txt");
+open(F,"$prefix\Isoforms_Counts_matrix.txt");
 while(my $data =<F>)
 {
  $data =~ s/^\s+|\s+$//g;
@@ -190,7 +194,7 @@ while(my $data =<F>)
  }
 }
 close F;
-open(OUT,">$prefix\_Genes_Counts_Matrix.txt");
+open(OUT,">$prefix\Genes_Counts_Matrix.txt");
 print OUT "Gene\t$header_new1\n";
 foreach my $m(keys %hash_new1)
 {
